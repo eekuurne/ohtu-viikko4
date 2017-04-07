@@ -13,19 +13,24 @@ public class Main {
             studentNr = args[0];
         }
 
-        String url = "http://ohtustats2017.herokuapp.com/students/" + studentNr + "/submissions";
-
-        String bodyText = Request.Get(url).execute().returnContent().asString();
+        String courseUrl = "https://ohtustats2017.herokuapp.com/courses/1.json";
+        String submissionsUrl = "http://ohtustats2017.herokuapp.com/students/" + studentNr + "/submissions";
+        
+        String courseText = Request.Get(courseUrl).execute().returnContent().asString();
+        String submissionsText = Request.Get(submissionsUrl).execute().returnContent().asString();
         
         //System.out.println("json-muotoinen data:");
         //System.out.println(bodyText);
+        //System.out.println(courseText);
         
         Gson mapper = new Gson();
-        Submission[] subs = mapper.fromJson(bodyText, Submission[].class);
+        Course course = mapper.fromJson(courseText, Course.class);
+        Submission[] subs = mapper.fromJson(submissionsText, Submission[].class);
 
+        System.out.println(course + "\n");
         System.out.println("opiskelijanumero: " + studentNr + "\n");
         for (Submission submission : subs) {
-            System.out.println(submission);
+            System.out.println(submission.toStringWithMaxExercises(course));
         }
         System.out.println("\nyhteensä: " + totalAmountDone(subs) + " tehtävää " + totalHours(subs) + " tuntia");
     }

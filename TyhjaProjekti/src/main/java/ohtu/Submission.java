@@ -45,6 +45,12 @@ public class Submission {
         }
         return exercises;
     }
+    
+    public String toStringWithMaxExercises(Course course) {
+        return "viikko " + week + ": tehtyjä tehtäviä yhteensä: " + 
+                getAmountDone() + " (maksimi " + course.getWeek(Integer.parseInt(week)) + "), aikaa kului " + hours + 
+                " tuntia, tehdyt tehtävät: " + exercisesToString();
+    }
 
     @Override
     public String toString() {
