@@ -30,8 +30,24 @@ public class AuthenticationService {
             status.addError("username is already taken");
         }
 
-        if (username.length()<3 ) {
+        if (usernameIsTooShort(username)) {
             status.addError("username should have at least 3 characters");
+        }
+        
+        if (usernameContainsInvalidCharacters(username)) {
+            status.addError("username should have only characters between a-z");
+        }
+        
+        if (passwordIsTooShort(password)) {
+            status.addError("password should have at least 8 characters");
+        }
+        
+        if (!passwordContainsSpecialCharacter(password)) {
+            status.addError("password can not contain only letters");
+        }
+        
+        if (!passwordConfirmationMatches(password, passwordConfirmation)) {
+            status.addError("password and password confirmation do not match");
         }
 
         if (status.isOk()) {
@@ -41,4 +57,46 @@ public class AuthenticationService {
         return status;
     }
 
+    private boolean usernameIsTooShort(String username) {
+        if (username.length() < 3) {
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean usernameContainsInvalidCharacters(String username) {
+        for (int i = 0; i < username.length(); i++) {
+            char ch = username.charAt(i); 
+            if (!(ch >= 'a' && ch <= 'z') && !(ch >= 'A' && ch <= 'Z')) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean passwordIsTooShort(String password) {
+        if (password.length() < 8) {
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean passwordContainsSpecialCharacter(String password) {
+        for (int i = 0; i < password.length(); i++) {
+            if (!Character.isLetter(password.charAt(i))) {
+                break;
+            }
+            if (i == password.length() - 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean passwordConfirmationMatches(String password, String passwordConfirmation) {
+        if (password.equals(passwordConfirmation)) {
+            return true;
+        }
+        return false;
+    }
 }
