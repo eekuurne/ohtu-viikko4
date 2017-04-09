@@ -30,11 +30,6 @@ public class Stepdefs {
         element = driver.findElement(By.name("login"));
         element.submit();  
     }
-
-    @Then("^system will respond \"([^\"]*)\"$")
-    public void system_will_respond(String pageContent) throws Throwable {
-        assertTrue(driver.getPageSource().contains(pageContent));
-    }
     
     @When("^correct username \"([^\"]*)\" and password \"([^\"]*)\" are given$")
     public void username_correct_and_password_are_given(String username, String password) throws Throwable {
@@ -43,6 +38,11 @@ public class Stepdefs {
 
     @When("^correct username \"([^\"]*)\" and incorrect password \"([^\"]*)\" are given$")
     public void username_and_incorrect_password_are_given(String username, String password) throws Throwable {
+        logInWith(username, password);
+    }
+    
+    @When("^incorrect username \"([^\"]*)\" and incorrect password \"([^\"]*)\" are given$")
+    public void incorrect_username_and_incorrect_password_are_given(String username, String password) throws Throwable {
         logInWith(username, password);
     }
     
